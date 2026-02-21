@@ -101,7 +101,7 @@ const signUp = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: false, // production me true
-      sameSite: "Lax",
+      sameSite: "Strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -111,6 +111,7 @@ const signUp = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "User register successful!",
+      user:user,
     });
   } catch (error) {
     return res.status(500).json({
@@ -149,13 +150,14 @@ const login=async(req,res)=>{
     res.cookie("token", token, {
     httpOnly: true,
     secure: false, // production me true
-    sameSite:"None",
+    sameSite:"strict",
     maxAge:7*24*60 * 60 * 1000
         });
     await user.save();
     return res.status(202).json({
             success:true,
-            message:"User login successfull !"
+            message:"User login successfull !",
+            user:user,
         })
     } catch (error) {
     return res.status(500).json({
@@ -166,19 +168,43 @@ const login=async(req,res)=>{
 }
 
 
-const logout=async(req,res)=>{
-    try {
-        res.clearCookie("token")
+// const logout=async(req,res)=>{
+//     try {
+//         res.clearCookie("token")
+//     return res.status(200).json({
+//             success:true,
+//             message:"User logout successfully"
+//         })
+//     } catch (error) {
+//     return res.status(500).json({
+//             success:false,
+//             message:error
+//         })
+//     }
+// }
+
+const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true, // production me true
+      sameSite: "strict"
+    });
+
     return res.status(200).json({
-            success:true,
-            message:"User logout successfully"
-        })
-    } catch (error) {
+      success: true,
+      message: "User logout successfully"
+    });
+
+  } catch (error) {
     return res.status(500).json({
-            success:false,
-            message:error
-        })
-    }
-}
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+
+
 
 module.exports={signUp,login,logout}
