@@ -2,57 +2,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const bcrypt=require('bcrypt')
 
-// const signUp=async(req,res)=>{
-//     try {
-//     const {userName,email,password}=req.body;
-//     if (!userName || !email || !password) {
-//         return res.status(400).json({
-//         success: false,
-//         message: "All fields are required"
-//         });
-//     }
-//     const result=await User.findOne({userName})
-//     const result1=await User.findOne({email})
-//     if(result){
-//         return res.status(400).json({
-//             success:false,
-//             message:"user already exist"
-//         })
-//     }
-//     if(result1){
-//         return res.status(400).json({
-//             success:false,
-//             message:"user already exist"
-//         })
-//     }
-//         if(password.length<6){
-//         return res.status(400).json({
-//             success:false,
-//             message:"password length must be above of 6 letter"
-//         })
-//     }
-//     const hashpass=await bcrypt.hash(password,10)
-//     const user=await User.create({userName,email,password:hashpass})
-//     const token = jwt.sign({id:user._id},process.env.KEY,{expiresIn:"7d"})
-//     res.cookie("token", token, {
-//     httpOnly: true,
-//     secure: false, // production me true
-//     sameSite:"Lax",
-//     maxAge:7*24*60 * 60 * 1000
-//         });
-//     user.token=token;
-//     await user.save();
-//     return res.status(200).json({
-//             success:true,
-//             message:"User register successfull !"
-//         })
-//     } catch (error) {
-//     return res.status(500).json({
-//             success:false,
-//             message:error
-//         })
-//     }
-// }
 
 
 const signUp = async (req, res) => {
@@ -168,20 +117,7 @@ const login=async(req,res)=>{
 }
 
 
-// const logout=async(req,res)=>{
-//     try {
-//         res.clearCookie("token")
-//     return res.status(200).json({
-//             success:true,
-//             message:"User logout successfully"
-//         })
-//     } catch (error) {
-//     return res.status(500).json({
-//             success:false,
-//             message:error
-//         })
-//     }
-// }
+
 
 const logout = async (req, res) => {
   try {
@@ -208,3 +144,59 @@ const logout = async (req, res) => {
 
 
 module.exports={signUp,login,logout}
+
+
+
+
+
+// const signUp=async(req,res)=>{
+//     try {
+//     const {userName,email,password}=req.body;
+//     if (!userName || !email || !password) {
+//         return res.status(400).json({
+//         success: false,
+//         message: "All fields are required"
+//         });
+//     }
+//     const result=await User.findOne({userName})
+//     const result1=await User.findOne({email})
+//     if(result){
+//         return res.status(400).json({
+//             success:false,
+//             message:"user already exist"
+//         })
+//     }
+//     if(result1){
+//         return res.status(400).json({
+//             success:false,
+//             message:"user already exist"
+//         })
+//     }
+//         if(password.length<6){
+//         return res.status(400).json({
+//             success:false,
+//             message:"password length must be above of 6 letter"
+//         })
+//     }
+//     const hashpass=await bcrypt.hash(password,10)
+//     const user=await User.create({userName,email,password:hashpass})
+//     const token = jwt.sign({id:user._id},process.env.KEY,{expiresIn:"7d"})
+//     res.cookie("token", token, {
+//     httpOnly: true,
+//     secure: false, // production me true
+//     sameSite:"Lax",
+//     maxAge:7*24*60 * 60 * 1000
+//         });
+//     user.token=token;
+//     await user.save();
+//     return res.status(200).json({
+//             success:true,
+//             message:"User register successfull !"
+//         })
+//     } catch (error) {
+//     return res.status(500).json({
+//             success:false,
+//             message:error
+//         })
+//     }
+// }

@@ -1,34 +1,60 @@
 
+const http=require("http")
+const express=require("express")
+const {Server}=require("socket.io")
+const Message=require("../models/message.model")
 
-const http = require("http")
-const express = require("express")
-const { Server } = require("socket.io")
+const app=express()
+const server=http.createServer(app)
 
-const app = express()
-const server = http.createServer(app)
-const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:5173",
-        credentials:true
-    }
-})
-    const userSocketMap =  {}
-
-    const getReceiverSocketId = (receiverId) => {
-    return userSocketMap[receiverId]
-}
-io.on("connection", (socket) => {
-    const userId = socket.handshake.query.userId
-    if (userId!=undefined) {
-        userSocketMap[userId] = socket.id
-    }
-    io.emit("getOnlineUsers", Object.keys(userSocketMap))
-socket.on("disconnect",()=>{
-        delete userSocketMap[userId]
-    io.emit("getOnlineUsers", Object.keys(userSocketMap))
+const io=new Server(server,{
+ cors:{origin:"http://localhost:5173",credentials:true}
 })
 
+const userSocketMap={}
+
+const getReceiverSocketId=(id)=>userSocketMap[id]
+
+io.on("connection",(socket)=>{
+
+ const userId=socket.handshake.query.userId
+ if(userId) userSocketMap[userId]=socket.id
+
+ io.emit("getOnlineUsers",Object.keys(userSocketMap))
+
+ /* ===== TYPING ===== */
+ socket.on("typing",(receiverId)=>{
+  const id=getReceiverSocketId(receiverId)
+  if(id) io.to(id).emit("typing")
+ })
+
+ socket.on("stopTyping",(receiverId)=>{
+  const id=getReceiverSocketId(receiverId)
+  if(id) io.to(id).emit("stopTyping")
+ })
+
+ /* ===== SEEN EVENT ===== */
+socket.on("messageSeen",async(data)=>{
+//   const {senderId,receiverId}=data
+  const senderId=data.senderId?.toString()
+  const receiverId=data.receiverId?.toString()
+
+  await Message.updateMany(
+    {sender:senderId,receiver:receiverId,seen:false},
+    {$set:{seen:true}}
+  )
+
+  const senderSocketId=getReceiverSocketId(senderId)
+  if(senderSocketId){
+    io.to(senderSocketId).emit("messagesSeenUpdated",{senderId})
+  }
 })
 
+ socket.on("disconnect",()=>{
+  delete userSocketMap[userId]
+  io.emit("getOnlineUsers",Object.keys(userSocketMap))
+ })
 
-module.exports = {app, server,io,getReceiverSocketId}
+})
+
+module.exports={app,server,io,getReceiverSocketId}
