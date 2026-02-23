@@ -7,7 +7,7 @@ const cors=require('cors');
 const userRouter = require("./routes/user.routes.js");
 const messageRoute = require("./routes/message.route.js");
 const { app, server } = require("./socket/socket.js");
-const port =process.env.PORT||8001;
+const port =process.env.PORT||8000;
 
 
 // const app=express();
@@ -22,6 +22,9 @@ app.use("/api/auth",authRouter)
 app.use("/api/user",userRouter)
 app.use("/api/message",messageRoute)
 
+app.get("/",(req,res)=>{
+  res.send("Backend running 🚀");
+});
 
 
 server.listen(port,()=>{
