@@ -1,3 +1,44 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.body {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+  background-color: black;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} */
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Hide scrollbar only where needed */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Optional body styling */
+body {
+  background-color: black;
+}
