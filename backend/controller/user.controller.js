@@ -22,26 +22,6 @@ const getCurrentUser=async(req,res)=>{
     }
 }
 
-// const edietProfile=async(req,res)=>{
-//     try {
-//         let {name}=req.body;
-//         let image;
-//         let file = null; 
-//         if(req.file){
-//             image=await uploadCloudinary(req.file.path)
-//         }
-//         let user=await User.findByIdAndUpdate(req.userId,{name,image})
-//         if(!user){
-//             return res.status(400).json({message:"user not found"})
-//         }
-//         return res.status(200).json(user)
-//     } catch (error) {
-//     return res.status(500).json({
-//             success:false,
-//             message:`editprofile Error: ${error}`
-//         })
-//     }
-// }
 
 
 const edietProfile = async (req, res) => {
@@ -70,7 +50,7 @@ const edietProfile = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: `editprofile Error: ${error.message}`
+      message: `editProfile Error: ${error.message}`
     });
   }
 };
@@ -85,7 +65,7 @@ const getOtherUser=async(req,res)=>{
   } catch (error) {
   return res.status(500).json({
       success: false,
-      message: `getotheruser Error: ${error.message}`
+      message: `getOtherUser Error: ${error.message}`
     });
   }
 }

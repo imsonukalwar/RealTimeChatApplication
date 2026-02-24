@@ -47,12 +47,19 @@ const signUp = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: true, // production me true
+    //   sameSite: "strict",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
+
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: true, // production me true
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
 
     user.token = token;
     await user.save();
@@ -65,7 +72,7 @@ const signUp = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message, // 🔥 FIX HERE
+      message: error.message,
     });
   }
 };
@@ -96,12 +103,18 @@ const login=async(req,res)=>{
         })
     }
     const token = jwt.sign({id:user._id},process.env.KEY,{expiresIn:"7d"})
+    // res.cookie("token", token, {
+    // httpOnly: true,
+    // secure: true, // production me true
+    // sameSite:"strict",
+    // maxAge:7*24*60 * 60 * 1000
+    //     });
     res.cookie("token", token, {
-    httpOnly: true,
-    secure: true, // production me true
-    sameSite:"strict",
-    maxAge:7*24*60 * 60 * 1000
-        });
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
     await user.save();
     return res.status(202).json({
             success:true,
@@ -121,11 +134,16 @@ const login=async(req,res)=>{
 
 const logout = async (req, res) => {
   try {
+    // res.clearCookie("token", {
+    //   httpOnly: true,
+    //   secure: true, // production me true
+    //   sameSite: "strict"
+    // });
     res.clearCookie("token", {
-      httpOnly: true,
-      secure: true, // production me true
-      sameSite: "strict"
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "None"
+});
 
     return res.status(200).json({
       success: true,
