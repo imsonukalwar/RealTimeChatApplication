@@ -1,15 +1,15 @@
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUserData } from "../redux/userSlice";
+import { setUserData} from "../redux/userSlice";
 import { serverUrl } from "../main";
 
 const GetCurrentUser = () => {
   const dispatch = useDispatch();
-  const calledRef = useRef(false); // 🔒 StrictMode safe
+  const calledRef = useRef(false);
 
   useEffect(() => {
-    if (calledRef.current) return; // ❌ double call stop
+    if (calledRef.current) return;
     calledRef.current = true;
 
     const fetchCurrentUser = async () => {
@@ -20,6 +20,7 @@ const GetCurrentUser = () => {
         );
         dispatch(setUserData(res.data));
       } catch (err) {
+        // dispatch(clearUser());////////////////////
         console.log("No active session",err);
       }
     };
@@ -27,7 +28,7 @@ const GetCurrentUser = () => {
     fetchCurrentUser();
   }, [dispatch]);
 
-  return null; // 👈 ye UI render nahi karta
+  return null;
 };
 
 export default GetCurrentUser;

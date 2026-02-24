@@ -13,7 +13,7 @@ export const serverUrl="https://realtimechatapplication-p7sq.onrender.com"
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
   <Provider store={store}>
-    <Toaster position="bottom-right" />
+    <Toaster position="bottom-right"/>
     <App />
   </Provider>
   </BrowserRouter>

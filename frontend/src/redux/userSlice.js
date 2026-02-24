@@ -11,10 +11,16 @@ const userSlice=createSlice({
         socket:null,
         onlineUser:null,
         SearchData:null,
+        // loading:true,///////////////////
     },
     reducers:{
+//         clearUser:(state)=>{//////////////////////
+//     state.userData=null
+//     state.loading=false
+// },
         setUserData:(state,action)=>{
             state.userData=action.payload
+            // state.loading=false/////////////////////
         },
         setOtherUserData:(state,action)=>{
             state.otherUsers=action.payload
