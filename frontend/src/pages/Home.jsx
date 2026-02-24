@@ -1,7 +1,7 @@
 import React from 'react'
-import Sidebar from '../components/sidebar'
-import MessageArea from '../components/messageArea'
+import Sidebar from '../components/Sidebar'
 import useGetMessage from '../custumHooks/getMessage'
+import MessageArea from '../components/messageArea'
 
 const Home = () => {
   useGetMessage()
