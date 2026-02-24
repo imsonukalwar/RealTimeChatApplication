@@ -20,7 +20,7 @@ const GetCurrentUser = () => {
         );
         dispatch(setUserData(res.data));
       } catch (err) {
-        dispatch(clearUser());////////////////////
+        dispatch(clearUser());//-
         console.log("No active session",err);
       }
     };

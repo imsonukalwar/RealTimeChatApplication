@@ -12,6 +12,83 @@ import SignUp from './pages/SignUp'
 import { setOnlineUsers, setSocket } from './redux/userSlice'
     import { Navigate } from "react-router-dom";
 
+
+
+const App = () => {
+
+    let {userData,socket,onlineUser,loading}=useSelector(state=>state.user)
+    let dispatch=useDispatch()
+
+    useGetOtherUser()
+
+    useEffect(()=>{
+        if(userData){
+            const socketIo=io(`${serverUrl}`,{
+                query:{ userId:userData?._id },
+                withCredentials:true
+            })
+            dispatch(setSocket(socketIo))
+            socketIo.on("getOnlineUsers",(users)=>{
+                dispatch(setOnlineUsers(users))
+            })
+            return ()=> socketIo.close()
+        }else{
+            if(socket){
+                socket.close()
+                dispatch(setSocket(null))
+            }
+        }
+    },[userData,dispatch,serverUrl])
+
+    return (
+        <>
+        {/* 🔥 MUST BE FIRST */}
+        <GetCurrentUser/>
+
+        {/* 🔥 NOW loading check works */}
+        {loading ? (
+          <div className="h-screen flex items-center justify-center">
+            Loading...
+          </div>
+        ) : (
+
+        <Routes>
+          <Route
+            path="/login"
+            element={!userData ? <Login/> : <Navigate to="/" />}
+          />
+
+          <Route
+            path="/signup"
+            element={!userData ? <SignUp/> : <Navigate to="/" />}
+          />
+
+          <Route
+            path="/"
+            element={userData ? <Home/> : <Navigate to="/login"/>}
+          />
+
+          <Route
+            path="/profile"
+            element={userData ? <Profile/> : <Navigate to="/login"/>}
+          />
+        </Routes>
+
+        )}
+        </>
+    )
+}
+
+export default App
+
+
+
+
+
+
+
+
+
 // const App = () => {
 //     let {userData,socket,onlineUser}=useSelector(state=>state.user)
 //     const { loading } = useSelector(state => state.user);
@@ -76,70 +153,3 @@ import { setOnlineUsers, setSocket } from './redux/userSlice'
 
 // export default App
 
-
-
-const App = () => {
-
-    let {userData,socket,onlineUser,loading}=useSelector(state=>state.user)
-    let dispatch=useDispatch()
-
-    useGetOtherUser()
-
-    useEffect(()=>{
-        if(userData){
-            const socketIo=io(`${serverUrl}`,{
-                query:{ userId:userData?._id },
-                withCredentials:true
-            })
-            dispatch(setSocket(socketIo))
-            socketIo.on("getOnlineUsers",(users)=>{
-                dispatch(setOnlineUsers(users))
-            })
-            return ()=> socketIo.close()
-        }else{
-            if(socket){
-                socket.close()
-                dispatch(setSocket(null))
-            }
-        }
-    },[userData,dispatch,serverUrl])
-
-    // 🔥 THIS BLOCK FIXES THE FLICKER
-    if (loading) {
-      return (
-        <div className="h-screen flex items-center justify-center">
-          Loading...
-        </div>
-      );
-    }
-
-    return (
-        <>
-        <GetCurrentUser/>
-
-        <Routes>
-          <Route
-            path="/login"
-            element={!userData ? <Login/> : <Navigate to="/" />}
-          />
-
-          <Route
-            path="/signup"
-            element={!userData ? <SignUp/> : <Navigate to="/" />}
-          />
-
-          <Route
-            path="/"
-            element={userData ? <Home/> : <Navigate to="/login"/>}
-          />
-
-          <Route
-            path="/profile"
-            element={userData ? <Profile/> : <Navigate to="/login"/>}
-          />
-        </Routes>
-        </>
-    )
-}
-
-export default App
