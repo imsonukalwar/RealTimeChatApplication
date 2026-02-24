@@ -12,7 +12,7 @@ import { serverUrl } from '../main';
 import { setMessages } from '../redux/messageSlice';
 import { setSelectedUser } from '../redux/userSlice';
 import ReceiverMessage from './ReseverMessage';
-import SenderMessage from './senderMessage';
+import SenderMessage from './SenderMessage';
 
 function MessageArea() {
 
