@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUserData} from "../redux/userSlice";
+import { setUserData,clearUser} from "../redux/userSlice";
 import { serverUrl } from "../main";
 
 const GetCurrentUser = () => {
@@ -20,7 +20,7 @@ const GetCurrentUser = () => {
         );
         dispatch(setUserData(res.data));
       } catch (err) {
-        // dispatch(clearUser());////////////////////
+        dispatch(clearUser());////////////////////
         console.log("No active session",err);
       }
     };

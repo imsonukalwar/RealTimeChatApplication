@@ -11,17 +11,17 @@ const userSlice=createSlice({
         socket:null,
         onlineUser:null,
         SearchData:null,
-        // loading:true,///////////////////
+        loading:true,///////////////////
     },
     reducers:{
-//         clearUser:(state)=>{//////////////////////
-//     state.userData=null
-//     state.loading=false
-// },
         setUserData:(state,action)=>{
             state.userData=action.payload
-            // state.loading=false/////////////////////
+            state.loading=false/////////////////////
         },
+                clearUser:(state)=>{//////////////////////
+    state.userData=null
+    state.loading=false
+},
         setOtherUserData:(state,action)=>{
             state.otherUsers=action.payload
         },
@@ -43,7 +43,7 @@ const userSlice=createSlice({
     
 })
 
-export const {setUserData,setOtherUserData,setSelectedUser,setSocket,setOnlineUsers,setSearchData}=userSlice.actions;
+export const {setUserData,setOtherUserData,setSelectedUser,setSocket,setOnlineUsers,setSearchData,clearUser}=userSlice.actions;
 export default userSlice.reducer
 
 

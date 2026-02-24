@@ -12,88 +12,134 @@ import SignUp from './pages/SignUp'
 import { setOnlineUsers, setSocket } from './redux/userSlice'
     import { Navigate } from "react-router-dom";
 
+// const App = () => {
+//     let {userData,socket,onlineUser}=useSelector(state=>state.user)
+//     const { loading } = useSelector(state => state.user);
+//     let dispatch=useDispatch()
+//     useGetOtherUser()
+// useEffect(()=>{
+//     if(userData){
+//         const socketIo=io(`${serverUrl}`,{query:{
+//     userId:userData?._id},
+//     withCredentials:true
+// })
+// dispatch(setSocket(socketIo))
+// socketIo.on("getOnlineUsers",(users)=>{
+//     dispatch(setOnlineUsers(users))
+// })
+// return  ()=>
+// socketIo.close()
+//     }else{
+//         if(socket){
+//             socket.close()
+//             dispatch(setSocket(null))
+//         }
+//     }
+// },[userData,dispatch,serverUrl])
+// return (
+//     <> 
+//     <GetCurrentUser/>
+//     {/* <Routes>
+//         <Route path='/login'  element={<Login/>} />
+//         <Route path='/signup'  element={<SignUp/>} />
+//         <Route path='/' element={<Home/>} />
+//         <Route path='/profile'  element={<Profile/>} />
+
+//     </Routes> */}
+//     <Routes>
+
+//   {/* Login */}
+//   <Route
+//     path="/login"
+//     element={!userData ? <Login/> : <Navigate to="/" />}
+//   />
+
+//   <Route
+//     path="/signup"
+//     element={!userData ? <SignUp/> : <Navigate to="/" />}
+//   />
+
+//   <Route
+//     path="/"
+//     element={userData ? <Home/> : <Navigate to="/login"/>}
+//   />
+
+//   <Route
+//     path="/profile"
+//     element={userData ? <Profile/> : <Navigate to="/login"/>}
+//   />
+
+// </Routes>
+//     </>
+// )
+// }
+
+// export default App
+
+
+
 const App = () => {
-    let {userData,socket,onlineUser}=useSelector(state=>state.user)
+
+    let {userData,socket,onlineUser,loading}=useSelector(state=>state.user)
     let dispatch=useDispatch()
+
     useGetOtherUser()
-useEffect(()=>{
-    if(userData){
-        const socketIo=io(`${serverUrl}`,{query:{
-    userId:userData?._id},
-    withCredentials:true
-})
-dispatch(setSocket(socketIo))
-socketIo.on("getOnlineUsers",(users)=>{
-    dispatch(setOnlineUsers(users))
-})
-return  ()=>
-socketIo.close()
-    }else{
-        if(socket){
-            socket.close()
-            dispatch(setSocket(null))
+
+    useEffect(()=>{
+        if(userData){
+            const socketIo=io(`${serverUrl}`,{
+                query:{ userId:userData?._id },
+                withCredentials:true
+            })
+            dispatch(setSocket(socketIo))
+            socketIo.on("getOnlineUsers",(users)=>{
+                dispatch(setOnlineUsers(users))
+            })
+            return ()=> socketIo.close()
+        }else{
+            if(socket){
+                socket.close()
+                dispatch(setSocket(null))
+            }
         }
+    },[userData,dispatch,serverUrl])
+
+    // 🔥 THIS BLOCK FIXES THE FLICKER
+    if (loading) {
+      return (
+        <div className="h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      );
     }
-},[userData,dispatch,serverUrl])
-return (
-    <> 
-    <GetCurrentUser/>
-    {/* <Routes>
-        <Route path='/login'  element={<Login/>} />
-        <Route path='/signup'  element={<SignUp/>} />
-        <Route path='/' element={<Home/>} />
-        <Route path='/profile'  element={<Profile/>} />
 
-    </Routes> */}
-    <Routes>
+    return (
+        <>
+        <GetCurrentUser/>
 
-  {/* Login */}
-  <Route 
-    path="/login"  
-    element={!userData ? <Login/> : <Navigate to="/" />} 
-  />
+        <Routes>
+          <Route
+            path="/login"
+            element={!userData ? <Login/> : <Navigate to="/" />}
+          />
 
-  {/* Signup */}
-  <Route 
-    path="/signup"  
-    element={!userData ? <SignUp/> : <Navigate to="/" />} 
-  />
+          <Route
+            path="/signup"
+            element={!userData ? <SignUp/> : <Navigate to="/" />}
+          />
 
-  {/* Home */}
-  <Route 
-    path="/" 
-    element={userData ? <Home/> : <Navigate to="/login"/>} 
-  />
+          <Route
+            path="/"
+            element={userData ? <Home/> : <Navigate to="/login"/>}
+          />
 
-  {/* Profile */}
-  <Route 
-    path="/profile"  
-    element={userData ? <Profile/> : <Navigate to="/login"/>} 
-  />
-
-</Routes>
-    </>
-)
+          <Route
+            path="/profile"
+            element={userData ? <Profile/> : <Navigate to="/login"/>}
+          />
+        </Routes>
+        </>
+    )
 }
 
 export default App
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <Route path='/login'  element={!userData?<Login/>:<Navigate to="/"/>}/>
-        <Route path='/signup'  element={userData?<SignUp/>:<Navigate to="/profile"/>} />
-        <Route path='/' element={userData?<Home/>:<Navigate to="/login"/>} />
-        <Route path='/profile'  element={userData?<Profile/>:<Navigate to="/signup"/>} /> */}
