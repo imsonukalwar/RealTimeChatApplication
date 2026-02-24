@@ -12,7 +12,9 @@ const port =process.env.PORT||8000;
 
 // const app=express();
 app.use(cors(
-    {origin:"http://localhost:5173",
+    {
+        // origin:"http://localhost:5173",
+        origin:"https://realtimechatapplication-1-qcr5.onrender.com",
     credentials:true
 }
 ))
