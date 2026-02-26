@@ -30,7 +30,8 @@ const SignUp = () => {
         { withCredentials: true }
       );
 
-      dispatch(setUserData(res.data));
+      // dispatch(setUserData(res.data));
+      dispatch(setUserData(res.data.user));
       toast.success("Registration successful 🎉");
 
       setTimeout(() => {
