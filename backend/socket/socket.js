@@ -7,9 +7,29 @@ const Message=require("../models/message.model")
 const app=express()
 const server=http.createServer(app)
 
-const io=new Server(server,{
- cors:{origin:"https://realtimechatapplication-1-qcr5.onrender.com",credentials:true}
-})
+// const io=new Server(server,{
+//  cors:{origin:"https://realtimechatapplication-1-qcr5.onrender.com",credentials:true}
+// })
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://real-time-chat-application-up5f.vercel.app",
+  "https://realtimechatapplication-1-qcr5.onrender.com",
+  "https://chatter10.netlify.app"
+];
+
+const io = new Server(server, {
+  cors: {
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Socket CORS not allowed"));
+      }
+    },
+    credentials: true
+  }
+});
 
 const userSocketMap={}
 
