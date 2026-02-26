@@ -115,7 +115,7 @@ const login=async(req,res)=>{
   sameSite: "None",
   maxAge: 7 * 24 * 60 * 60 * 1000
 });
-    await user.save();
+    // await user.save();
     return res.status(202).json({
             success:true,
             message:"User login successfull !",
