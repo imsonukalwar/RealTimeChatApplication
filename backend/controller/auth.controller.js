@@ -47,13 +47,6 @@ const signUp = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    //   secure: true, // production me true
-    //   sameSite: "strict",
-    //   maxAge: 7 * 24 * 60 * 60 * 1000,
-    // });
-
     res.cookie("token", token, {
   httpOnly: true,
   secure: true,
@@ -61,8 +54,8 @@ const signUp = async (req, res) => {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 });
 
-    user.token = token;
-    await user.save();
+    // user.token = token;
+    // await user.save();
 
     return res.status(200).json({
       success: true,
@@ -103,12 +96,6 @@ const login=async(req,res)=>{
         })
     }
     const token = jwt.sign({id:user._id},process.env.KEY,{expiresIn:"7d"})
-    // res.cookie("token", token, {
-    // httpOnly: true,
-    // secure: true, // production me true
-    // sameSite:"strict",
-    // maxAge:7*24*60 * 60 * 1000
-    //     });
     res.cookie("token", token, {
   httpOnly: true,
   secure: true,

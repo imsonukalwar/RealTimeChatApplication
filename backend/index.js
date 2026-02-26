@@ -22,8 +22,8 @@ const port =process.env.PORT||8000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://realtimechatapplication-1-qcr5.onrender.com",
-  "https://real-time-chat-application-up5f.vercel.app/",
-  "chatter10.netlify.app"
+  "https://real-time-chat-application-up5f.vercel.app",
+  "https://chatter10.netlify.app"
 
 ];
 
